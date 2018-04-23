@@ -3,9 +3,9 @@ package org.tokero.billet_controk.bank_file.reader;
 import java.io.FileInputStream;
 import java.util.List;
 
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.tokero.common.model.BankingMovement;
 
 public class BBVAAccountFileReader implements IBankFileReader{
@@ -14,19 +14,20 @@ public class BBVAAccountFileReader implements IBankFileReader{
 	public List<BankingMovement> readFile(String filePath) {
 		List<BankingMovement> movements = null;
 		try {
-			HSSFWorkbook wb = new HSSFWorkbook(new FileInputStream(filePath));
-			HSSFSheet sheet=wb.getSheetAt(0);
+			XSSFWorkbook  wb = new XSSFWorkbook(new FileInputStream(filePath));
+			XSSFSheet sheet = wb.getSheetAt(0);
+			XSSFRow row; 
 			int rows = sheet.getPhysicalNumberOfRows();
-			HSSFRow row; 
 
 		    for(int r = 0; r < rows - HEADER_ROWS; r++) {
 		        row = sheet.getRow(r + HEADER_ROWS);
 		        if(row != null) {
-		        	
+		        	String rowDate = row.getCell(1).getStringCellValue();
+		        	System.out.println("Row " + r + ": Date " + rowDate);
 		        }
 		    }
 		} catch (Exception ex) {
-			
+			System.out.println("Hostiazo como un campano");
 		}
 		return movements;
 	}
